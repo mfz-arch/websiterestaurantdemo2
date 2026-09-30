@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --color-terracotta-400: #F18A4F;
+  --color-terracotta-500: #E06D2B;
+  --color-terracotta-600: #D95A1E;
+  --color-terracotta-700: #B8450F;
+
+  --color-savorite-bg: #111215;
+  --color-savorite-card: #1A1C24;
+  --color-savorite-hover: #222530;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Outfit", Inter, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: #111215;
+    color: #F7F8FA;
+  }
+  body {
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+}
+
+/* SAVORITE Custom Styling */
+.savorite-card {
+  background: #1A1C24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.savorite-card:hover {
+  border-color: rgba(224, 109, 43, 0.5);
+  box-shadow: 0 15px 35px -5px rgba(224, 109, 43, 0.25);
+  transform: translateY(-4px);
+}
+
+.terracotta-btn {
+  background: linear-gradient(135deg, #F18A4F 0%, #E06D2B 50%, #D95A1E 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(224, 109, 43, 0.35);
+}
+
+.terracotta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(224, 109, 43, 0.5);
+}
+
+.terracotta-gradient-text {
+  background: linear-gradient(135deg, #FFB082 0%, #E06D2B 50%, #D95A1E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #111215;
+}
+::-webkit-scrollbar-thumb {
+  background: #232631;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E06D2B;
+}
