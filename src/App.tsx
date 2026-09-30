@@ -7,10 +7,14 @@ import { ChefsSection } from './components/ChefsSection';
 import { ReviewsSection } from './components/ReviewsSection';
 import { Footer } from './components/Footer';
 import { TableReservationModal } from './components/TableReservationModal';
+import { AuthModal } from './components/AuthModal';
 
 export function App() {
   const [currency, setCurrency] = useState<Currency>('TZS');
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+  const [userName, setUserName] = useState<string | null>(null);
   const [preSelectedDish, setPreSelectedDish] = useState<MenuItem | null>(null);
 
   const handleOpenReservationForDish = (dish: MenuItem) => {
@@ -23,6 +27,19 @@ export function App() {
     setIsReservationOpen(true);
   };
 
+  const handleOpenAuth = (mode: 'signin' | 'signup' = 'signin') => {
+    setAuthMode(mode);
+    setIsAuthOpen(true);
+  };
+
+  const handleSuccessLogin = (name: string) => {
+    setUserName(name);
+  };
+
+  const handleSignOut = () => {
+    setUserName(null);
+  };
+
   return (
     <div className="min-h-screen bg-[#111215] text-[#F7F8FA] font-sans selection:bg-[#E06D2B] selection:text-white">
       {/* SAVORITE Navigation Bar */}
@@ -30,6 +47,9 @@ export function App() {
         currency={currency}
         setCurrency={setCurrency}
         onOpenReservation={handleGeneralReservationClick}
+        onOpenAuth={handleOpenAuth}
+        userName={userName}
+        onSignOut={handleSignOut}
       />
 
       {/* Main Content Sections (Photo 2 SAVORITE Design) */}
@@ -59,6 +79,14 @@ export function App() {
         onClose={() => setIsReservationOpen(false)}
         currency={currency}
         preSelectedDish={preSelectedDish}
+      />
+
+      {/* Sign In / Sign Up Modal */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        onSuccessLogin={handleSuccessLogin}
+        initialMode={authMode}
       />
     </div>
   );

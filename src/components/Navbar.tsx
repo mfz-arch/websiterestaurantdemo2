@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import type { Currency } from '../types/restaurant';
-import { Calendar, UtensilsCrossed } from 'lucide-react';
+import { Calendar, UtensilsCrossed, User, LogOut, UserPlus } from 'lucide-react';
 
 interface NavbarProps {
   currency: Currency;
   setCurrency: (c: Currency) => void;
   onOpenReservation: () => void;
+  onOpenAuth: (mode?: 'signin' | 'signup') => void;
+  userName: string | null;
+  onSignOut: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currency,
   setCurrency,
   onOpenReservation,
+  onOpenAuth,
+  userName,
+  onSignOut,
 }) => {
   const [scrolled, setScrolled] = useState(false);
 
@@ -61,13 +67,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <a href="#reviews" className="text-slate-300 hover:text-terracotta-400 transition-colors">
             Patrons
           </a>
-          <a href="#reservation" className="text-slate-300 hover:text-terracotta-400 transition-colors">
-            Reserve
-          </a>
         </div>
 
         {/* Right Controls */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2.5 sm:space-x-4">
           {/* Currency Switcher */}
           <div className="flex items-center bg-[#1A1C24] border border-white/10 rounded-full p-1 text-xs font-semibold">
             <button
@@ -92,10 +95,42 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
+          {/* User Sign In / Sign Up Button or Member Badge */}
+          {userName ? (
+            <div className="flex items-center space-x-2 bg-[#1A1C24] border border-terracotta-500/40 rounded-full px-3.5 py-1.5 text-xs text-white">
+              <User className="w-3.5 h-3.5 text-terracotta-400" />
+              <span className="font-bold">{userName}</span>
+              <button
+                onClick={onSignOut}
+                title="Sign Out"
+                className="ml-1 text-slate-400 hover:text-rose-400 transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => onOpenAuth('signin')}
+                className="hidden lg:flex items-center space-x-1.5 px-3.5 py-2 rounded-full border border-white/15 bg-[#1A1C24] hover:bg-white/10 text-xs font-semibold text-slate-200 transition-all"
+              >
+                <User className="w-3.5 h-3.5 text-terracotta-400" />
+                <span>Sign In</span>
+              </button>
+              <button
+                onClick={() => onOpenAuth('signup')}
+                className="hidden sm:flex items-center space-x-1.5 px-3.5 py-2 rounded-full border border-terracotta-500/40 bg-terracotta-500/10 hover:bg-terracotta-500/20 text-xs font-semibold text-terracotta-300 transition-all"
+              >
+                <UserPlus className="w-3.5 h-3.5 text-terracotta-400" />
+                <span>Create Account</span>
+              </button>
+            </div>
+          )}
+
           {/* Reserve Table Button */}
           <button
             onClick={onOpenReservation}
-            className="terracotta-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider flex items-center space-x-2"
+            className="terracotta-btn px-4 sm:px-5 py-2.5 rounded-full text-xs uppercase tracking-wider flex items-center space-x-2"
           >
             <Calendar className="w-3.5 h-3.5" />
             <span>Reserve Table</span>
@@ -105,3 +140,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </nav>
   );
 };
+
