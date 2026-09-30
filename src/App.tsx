@@ -6,7 +6,7 @@ import { DishesShowcase } from './components/DishesShowcase';
 import { ChefsSection } from './components/ChefsSection';
 import { ReviewsSection } from './components/ReviewsSection';
 import { Footer } from './components/Footer';
-import { TableReservationModal } from './components/TableReservationModal';
+import { TableReservationModal, type UserProfile } from './components/TableReservationModal';
 import { AuthModal } from './components/AuthModal';
 
 export function App() {
@@ -14,16 +14,19 @@ export function App() {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
-  const [userName, setUserName] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [preSelectedDish, setPreSelectedDish] = useState<MenuItem | null>(null);
+  const [modalInitialStep, setModalInitialStep] = useState<1 | 2>(1);
 
   const handleOpenReservationForDish = (dish: MenuItem) => {
     setPreSelectedDish(dish);
+    setModalInitialStep(currentUser ? 2 : 1);
     setIsReservationOpen(true);
   };
 
   const handleGeneralReservationClick = () => {
     setPreSelectedDish(null);
+    setModalInitialStep(currentUser ? 2 : 1);
     setIsReservationOpen(true);
   };
 
@@ -33,11 +36,19 @@ export function App() {
   };
 
   const handleSuccessLogin = (name: string) => {
-    setUserName(name);
+    setCurrentUser({
+      name: name,
+      email: `${name.toLowerCase().replace(/\s+/g, '')}@example.com`,
+      phone: '+255 774 000 999',
+    });
+  };
+
+  const handleModalProfileLogin = (profile: UserProfile) => {
+    setCurrentUser(profile);
   };
 
   const handleSignOut = () => {
-    setUserName(null);
+    setCurrentUser(null);
   };
 
   return (
@@ -48,7 +59,7 @@ export function App() {
         setCurrency={setCurrency}
         onOpenReservation={handleGeneralReservationClick}
         onOpenAuth={handleOpenAuth}
-        userName={userName}
+        userName={currentUser?.name || null}
         onSignOut={handleSignOut}
       />
 
@@ -79,6 +90,9 @@ export function App() {
         onClose={() => setIsReservationOpen(false)}
         currency={currency}
         preSelectedDish={preSelectedDish}
+        currentUser={currentUser}
+        onLoginSuccess={handleModalProfileLogin}
+        initialStep={modalInitialStep}
       />
 
       {/* Sign In / Sign Up Modal */}
@@ -93,3 +107,4 @@ export function App() {
 }
 
 export default App;
+
